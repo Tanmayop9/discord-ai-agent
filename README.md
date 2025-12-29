@@ -9,6 +9,7 @@
   <summary>Table of Contents</summary>
   <ol>
     <li><a href="#-demo">Demo</a></li>
+    <li><a href="#-whats-new-in-v20">What's New in v2.0</a></li>
     <li><a href="#-features">Features</a></li>
     <li><a href="#-available-commands">Available Commands</a></li>
     <li><a href="#-how-i-used-composio">How I Used Composio?</a></li>
@@ -28,6 +29,31 @@
 
 ## 🎥 DEMO
 [![demo video](https://img.youtube.com/vi/___DcDDQK-k/0.jpg)](https://www.youtube.com/watch?v=___DcDDQK-k)
+
+## 🆕 What's New in v2.0?
+
+### Modern Interactive UI 🎨
+The bot now features a **modern Discord interface** with:
+- 🔘 **Interactive Buttons** - Click buttons for quick actions
+- 📋 **Select Menus** - Dropdown menus for easy navigation  
+- 📝 **Modal Forms** - User-friendly forms for data input
+- 🎨 **Rich Embeds** - Beautiful, colored messages
+- ⚡ **Real-time Updates** - Dynamic message editing
+
+### New Commands 🚀
+- `!dashboard` - Interactive dashboard with all services
+- `!calendar_menu` - Calendar quick actions with buttons
+- `!service_menu` - Service selection dropdown
+- `!help` - Interactive help with category selection
+
+### Enhanced Experience ✨
+- All commands now use beautiful embeds
+- Color-coded by service (Calendar=Blue, Gmail=Red, etc.)
+- Better error messages and status updates
+- Cleaner, more organized interface
+
+📖 **See [FEATURES.md](FEATURES.md) for detailed feature overview**  
+🎮 **See [QUICKSTART.md](QUICKSTART.md) for quick reference guide**
 
 ## 📙 Features
 
@@ -169,13 +195,15 @@ python3 main.py
 │   └── manage_multi_service.py
 ├── .env.example
 ├── .gitignore
-├── EXAMPLES.md
+├── EXAMPLES.md          # Usage examples with new interactive features
+├── FEATURES.md          # NEW: Detailed feature documentation
+├── QUICKSTART.md        # NEW: Quick reference guide
 ├── gmail_tools.py
 ├── github_tools.py
 ├── slack_tools.py
 ├── LICENSE
 ├── README.md
-├── main.py
+├── main.py              # ENHANCED: Now with interactive UI components
 ├── requirements.txt
 ├── setup.sh
 └── tools.py
