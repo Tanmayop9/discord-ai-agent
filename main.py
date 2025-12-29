@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from discord import app_commands
 from discord.ui import Button, Select, View, Modal, TextInput
 import os
 from dotenv import load_dotenv
