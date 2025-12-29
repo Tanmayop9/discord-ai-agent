@@ -406,4 +406,221 @@ def get_event_id_by_title(connectionAccountId: str, title: str) -> str:
     return event.event_id
 
 
+@tool("List Upcoming Events")
+def list_upcoming_events(connectedAccountId: str, max_results: int = 10, calendar_id: str | None = None) -> str:
+    """
+        List upcoming events from Google Calendar in a formatted manner.
+
+        :param required connectedAccountId: The ID of the connected account.
+        :param optional max_results: Maximum number of events to return (default: 10).
+        :param optional calendar_id: The ID of the calendar to list events from.
+    """
+
+    print("\n\nListing upcoming events\n\n")
+
+    url = "https://backend.composio.dev/api/v1/actions/googlecalendar_find_event/execute"
+
+    from datetime import datetime, timezone as tz
+    time_min = datetime.now(tz.utc).isoformat()
+
+    input_data = {
+        "time_min": time_min,
+        "max_results": max_results,
+        "order_by": "startTime",
+        "single_events": True
+    }
+
+    if calendar_id is not None:
+        input_data["calendar_id"] = calendar_id
+
+    payload = {
+        "connectedAccountId": connectedAccountId,
+        "appName": "googlecalendar",
+        "input": input_data
+    }
+
+    headers = {
+        "X-API-Key": COMPOSIO_API_KEY,
+        "Content-Type": "application/json"
+    }
+
+    response = requests.post(url, json=payload, headers=headers)
+    response_json = response.json()
+
+    if response_json["executed"]:
+        events = response_json["response"]["event_data"]
+        if events:
+            event_list = []
+            for event in events:
+                try:
+                    title = event.get("summary", "No Title")
+                    start = event.get("start", {})
+                    start_time = start.get("dateTime", start.get("date", "No time"))
+                    event_list.append(f"• **{title}** - {start_time}")
+                except Exception as e:
+                    pass
+            return f"📅 **Upcoming Events:**\n" + "\n".join(event_list)
+        else:
+            return "No upcoming events found."
+    else:
+        if response_json.get("response", {}).get("error", {}).get("code") == 401:
+            return "Your account's authentication credentials is expired. Please re authenticate again by using `!authenticate` command."
+        return "Something went wrong in listing upcoming events."
+
+
+@tool("Add Attendee to Event")
+def add_attendee_to_event(connectedAccountId: str, event_id: str, attendee_email: str, calendar_id: str | None = None) -> str:
+    """
+        Add an attendee to an existing event in a Google Calendar.
+        Event ID can be obtained by using the `Get Event ID via Title` tool.
+
+        :param required connectedAccountId: The ID of the connected account.
+        :param required event_id: The ID of the event.
+        :param required attendee_email: The email of the attendee to add.
+        :param optional calendar_id: The ID of the calendar.
+    """
+
+    print("\n\nAdding attendee to event\n\n")
+
+    url = "https://backend.composio.dev/api/v1/actions/googlecalendar_add_attendee/execute"
+
+    input_data = {
+        "event_id": event_id,
+        "attendee_email": attendee_email
+    }
+
+    if calendar_id is not None:
+        input_data["calendar_id"] = calendar_id
+
+    payload = {
+        "connectedAccountId": connectedAccountId,
+        "appName": "googlecalendar",
+        "input": input_data
+    }
+
+    headers = {
+        "X-API-Key": COMPOSIO_API_KEY,
+        "Content-Type": "application/json"
+    }
+
+    response = requests.post(url, json=payload, headers=headers)
+    response_json = response.json()
+
+    if response_json["executed"]:
+        return f"Successfully added {attendee_email} to the event!"
+    else:
+        if response_json.get("response", {}).get("error", {}).get("code") == 401:
+            return "Your account's authentication credentials is expired. Please re authenticate again by using `!authenticate` command."
+        return "Something went wrong in adding the attendee to the event."
+
+
+@tool("Get Event Details")
+def get_event_details(connectedAccountId: str, event_id: str, calendar_id: str | None = None) -> str:
+    """
+        Get detailed information about a specific event in Google Calendar.
+        Event ID can be obtained by using the `Get Event ID via Title` tool.
+
+        :param required connectedAccountId: The ID of the connected account.
+        :param required event_id: The ID of the event.
+        :param optional calendar_id: The ID of the calendar.
+    """
+
+    print("\n\nGetting event details\n\n")
+
+    url = "https://backend.composio.dev/api/v1/actions/googlecalendar_get_event/execute"
+
+    input_data = {
+        "event_id": event_id
+    }
+
+    if calendar_id is not None:
+        input_data["calendar_id"] = calendar_id
+
+    payload = {
+        "connectedAccountId": connectedAccountId,
+        "appName": "googlecalendar",
+        "input": input_data
+    }
+
+    headers = {
+        "X-API-Key": COMPOSIO_API_KEY,
+        "Content-Type": "application/json"
+    }
+
+    response = requests.post(url, json=payload, headers=headers)
+    response_json = response.json()
+
+    if response_json["executed"]:
+        event = response_json["response"]
+        details = []
+        
+        if "summary" in event:
+            details.append(f"**Title:** {event['summary']}")
+        if "start" in event:
+            start = event["start"].get("dateTime", event["start"].get("date"))
+            details.append(f"**Start:** {start}")
+        if "end" in event:
+            end = event["end"].get("dateTime", event["end"].get("date"))
+            details.append(f"**End:** {end}")
+        if "description" in event:
+            details.append(f"**Description:** {event['description']}")
+        if "location" in event:
+            details.append(f"**Location:** {event['location']}")
+        if "attendees" in event:
+            attendee_list = ", ".join([a.get("email", "") for a in event["attendees"]])
+            details.append(f"**Attendees:** {attendee_list}")
+        if "hangoutLink" in event:
+            details.append(f"**Meeting Link:** {event['hangoutLink']}")
+        
+        return "📋 **Event Details:**\n" + "\n".join(details)
+    else:
+        if response_json.get("response", {}).get("error", {}).get("code") == 401:
+            return "Your account's authentication credentials is expired. Please re authenticate again by using `!authenticate` command."
+        return "Something went wrong in getting event details."
+
+
+@tool("List Calendars")
+def list_calendars(connectedAccountId: str) -> str:
+    """
+        List all calendars available for the user.
+
+        :param required connectedAccountId: The ID of the connected account.
+    """
+
+    print("\n\nListing calendars\n\n")
+
+    url = "https://backend.composio.dev/api/v1/actions/googlecalendar_list_calendars/execute"
+
+    payload = {
+        "connectedAccountId": connectedAccountId,
+        "appName": "googlecalendar",
+        "input": {}
+    }
+
+    headers = {
+        "X-API-Key": COMPOSIO_API_KEY,
+        "Content-Type": "application/json"
+    }
+
+    response = requests.post(url, json=payload, headers=headers)
+    response_json = response.json()
+
+    if response_json["executed"]:
+        calendars = response_json["response"].get("items", [])
+        if calendars:
+            calendar_list = []
+            for cal in calendars:
+                name = cal.get("summary", "Unknown")
+                cal_id = cal.get("id", "")
+                primary = " (Primary)" if cal.get("primary", False) else ""
+                calendar_list.append(f"• **{name}**{primary} - `{cal_id}`")
+            return "📅 **Your Calendars:**\n" + "\n".join(calendar_list)
+        else:
+            return "No calendars found."
+    else:
+        if response_json.get("response", {}).get("error", {}).get("code") == 401:
+            return "Your account's authentication credentials is expired. Please re authenticate again by using `!authenticate` command."
+        return "Something went wrong in listing calendars."
+
+
     

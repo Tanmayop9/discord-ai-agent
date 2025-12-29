@@ -149,5 +149,75 @@ async def _calendar(ctx, *, message: str):
     await ctx.send(response)
 
 
+@bot.command(name='upcoming')
+async def _upcoming(ctx, count: int = 10):
+    """
+        List upcoming events from Google Calendar.
+    """
+
+    user_id = ctx.author.id
+
+    # Check if the user has an account
+    Account = Query()
+    is_account = user_db.search(Account.user_id == user_id)
+
+    if not is_account:
+        await ctx.send("You don't have an account yet. Please create one using `!create_account`.")
+        return
+
+    await ctx.send("Fetching your upcoming events...")
+
+    connected_account_id = user_db.search(Account.user_id == user_id)[0]["connected_account_id"]
+
+    response = manage_events(connected_account_id, f"List my next {count} upcoming events")
+    await ctx.send(response)
+
+
+@bot.command(name='help')
+async def _help(ctx):
+    """
+        Display help information about available commands.
+    """
+    
+    help_text = """
+📚 **Discord AI Calendar Agent - Commands**
+
+**Account Management:**
+• `!create_account` - Create a new account and connect to Google Calendar
+• `!authenticate` - Re-authenticate your account if credentials expire
+
+**Calendar Management:**
+• `!calendar <message>` - Natural language calendar management
+  Examples:
+  - "Create a meeting tomorrow at 2pm for 1 hour"
+  - "Find all my events this week"
+  - "Delete the meeting called 'Team Sync'"
+  - "Add john@example.com to my project meeting"
+  - "Update my dentist appointment to next Monday at 3pm"
+
+• `!upcoming [count]` - List your upcoming events (default: 10)
+  Example: `!upcoming 5` - Show next 5 events
+
+**What you can do with natural language:**
+✅ Create events with meeting rooms, attendees, and descriptions
+✅ Find and search events
+✅ Update event details (time, title, description)
+✅ Delete events
+✅ Add or remove attendees
+✅ Get detailed event information
+✅ List your calendars
+✅ Quick add events from simple text
+
+**Tips:**
+💡 Be specific with dates and times
+💡 Include email addresses when adding attendees
+💡 You can ask to create Google Meet rooms
+💡 The bot understands natural language - just chat normally!
+
+Need help? Just ask the bot in natural language! 🤖
+"""
+    
+    await ctx.send(help_text)
+
 
 bot.run(DISCORD_BOT_TOKEN)
