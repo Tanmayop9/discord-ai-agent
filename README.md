@@ -10,6 +10,7 @@
   <ol>
     <li><a href="#-demo">Demo</a></li>
     <li><a href="#-features">Features</a></li>
+    <li><a href="#-available-commands">Available Commands</a></li>
     <li><a href="#-how-i-used-composio">How I Used Composio?</a></li>
     <li>
       <span>Getting Started</span>
@@ -102,6 +103,8 @@ Use natural language to work across multiple services simultaneously! The AI age
 !ai Schedule a meeting for next Monday and notify the team on Slack
 ```
 
+📖 **For more detailed examples, see [EXAMPLES.md](EXAMPLES.md)**
+
 ## 🤔 How I used composio?
 **Composio** was very _crucial and reliable tool_ for making my project. It helped me to make my agentic tools for the agent **much more faster** and **in an easy way** acting like a **pipeline** between _agent_ and multiple services like _Google Calendar_, _Gmail_, _GitHub_, and _Slack_. It would really took me many more days if done without this 🔥.
 
@@ -148,6 +151,7 @@ python3 main.py
 │   └── manage_multi_service.py
 ├── .env.example
 ├── .gitignore
+├── EXAMPLES.md
 ├── gmail_tools.py
 ├── github_tools.py
 ├── slack_tools.py
