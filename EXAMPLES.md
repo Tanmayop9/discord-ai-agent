@@ -2,6 +2,44 @@
 
 This document provides practical examples of how to use the Discord AI Agent with various services.
 
+## 🆕 Modern Interactive Features
+
+### Interactive Dashboard
+The new interactive dashboard provides quick access to all services with buttons:
+```
+!dashboard
+```
+This opens a menu with buttons for:
+- 📅 Calendar - Quick calendar actions
+- 📧 Gmail - Check email status
+- 🐙 GitHub - View GitHub info
+- 💬 Slack - Slack quick actions
+- 🤖 AI Assistant - AI help
+
+### Calendar Menu
+Open an interactive menu for calendar operations:
+```
+!calendar_menu
+```
+Features:
+- **📅 Upcoming Events** - View your next events instantly
+- **📆 Today's Events** - See today's schedule
+- **➕ Create Event** - Fill out a form to create events easily
+
+### Service Selection Menu
+Choose your service with a dropdown:
+```
+!service_menu
+```
+Select from Calendar, Gmail, GitHub, Slack, or AI services.
+
+### Interactive Help
+Get contextual help with category selection:
+```
+!help
+```
+Then select a category from the dropdown to get specific help.
+
 ## 📅 Google Calendar Examples
 
 ### Creating Events

@@ -31,6 +31,16 @@
 
 ## 📙 Features
 
+### 🆕 Modern Interactive UI
+The bot now features a modern interface with interactive components:
+
+- **Interactive Dashboard** (`!dashboard`) - Quick access buttons for all services
+- **Select Menus** - Dropdown menus for choosing services and options
+- **Button Actions** - One-click access to common operations
+- **Modal Forms** - Easy event creation with form inputs
+- **Rich Embeds** - Beautiful formatted messages with colors and structure
+- **Real-time Updates** - Dynamic message editing for better UX
+
 ### 🗓️ Google Calendar
 You can manage calendar events just by normal chatting with our bot:
 
@@ -73,6 +83,12 @@ Use natural language to work across multiple services simultaneously! The AI age
 
 ## 🎮 Available Commands
 
+### 🆕 Interactive Commands
+- `!dashboard` - Open your interactive dashboard with quick action buttons
+- `!calendar_menu` - Interactive calendar operations menu
+- `!service_menu` - Service selection dropdown menu
+- `!help` - Interactive help with category selection
+
 ### Account Management
 - `!create_account` - Create a new account and connect to services
 - `!authenticate` - Re-authenticate your account if credentials expire
@@ -96,6 +112,8 @@ Use natural language to work across multiple services simultaneously! The AI age
 
 **Examples:**
 ```
+!dashboard - Open interactive dashboard
+!calendar_menu - Quick calendar actions
 !calendar Create a team meeting tomorrow at 3pm with john@example.com
 !gmail Send an email to sarah@example.com about the project update
 !github Create an issue in facebook/react about the bug I found
