@@ -7,6 +7,9 @@ import os
 dotenv.load_dotenv()
 COMPOSIO_API_KEY = os.environ["COMPOSIO_API_KEY"]
 
+# Configuration
+MAX_CHANNELS_TO_LIST = 20  # Maximum number of channels to display
+
 
 @tool("Send Slack Message")
 def send_slack_message(connectedAccountId: str, channel: str, text: str) -> str:
@@ -79,12 +82,16 @@ def list_slack_channels(connectedAccountId: str) -> str:
         channels = response_json.get("response", {}).get("channels", [])
         if channels:
             channel_list = []
-            for channel in channels[:20]:  # Limit to 20 channels
+            for channel in channels[:MAX_CHANNELS_TO_LIST]:
                 name = channel.get("name", "Unknown")
                 channel_id = channel.get("id", "")
                 is_member = "✓" if channel.get("is_member", False) else " "
                 channel_list.append(f"[{is_member}] **#{name}** (`{channel_id}`)")
-            return "💬 **Slack Channels:**\n" + "\n".join(channel_list)
+            total_channels = len(channels)
+            result = "💬 **Slack Channels:**\n" + "\n".join(channel_list)
+            if total_channels > MAX_CHANNELS_TO_LIST:
+                result += f"\n\n(Showing {MAX_CHANNELS_TO_LIST} of {total_channels} channels)"
+            return result
         else:
             return "No channels found."
     else:

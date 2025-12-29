@@ -64,8 +64,6 @@ def manage_multi_service(connectedAccountId: str, prompt: str, service: str = "c
         :param optional service: The service to use - "calendar", "gmail", "github", "slack", or "all" (default: "calendar").
     """
 
-    log = ""
-
     # Select tools based on service
     if service == "calendar":
         tools = [get_event_id_by_title, create_event, find_events, update_event, delete_event, 
@@ -99,7 +97,7 @@ def manage_multi_service(connectedAccountId: str, prompt: str, service: str = "c
         backstory = """You are an AI agent responsible for managing Slack operations on users' behalf.
         You can send messages to channels, create channels, set status, and send direct messages."""
     
-    else:  # "all" - use all tools
+    elif service == "all":
         tools = [
             # Calendar
             get_event_id_by_title, create_event, find_events, update_event, delete_event, 
@@ -119,6 +117,10 @@ def manage_multi_service(connectedAccountId: str, prompt: str, service: str = "c
         backstory = """You are an AI agent responsible for managing multiple services on users' behalf.
         You can handle Google Calendar events, Gmail emails, GitHub issues and repositories, and Slack messages.
         Choose the appropriate service and tools based on the user's request."""
+    
+    else:
+        # Invalid service name
+        return f"Invalid service '{service}'. Please use 'calendar', 'gmail', 'github', 'slack', or 'all'."
 
     agent = Agent(
         role=role,
@@ -128,10 +130,6 @@ def manage_multi_service(connectedAccountId: str, prompt: str, service: str = "c
         tools=tools,
         llm=llm,
     )
-
-    def log_response(response):
-        nonlocal log
-        log += response + "\n"
 
     # Build task description based on service
     if service == "calendar":
@@ -152,7 +150,6 @@ def manage_multi_service(connectedAccountId: str, prompt: str, service: str = "c
         description=task_desc,
         agent=agent,
         expected_output=expected,
-        on_result=log_response,
     )
 
     response = task.execute()

@@ -457,8 +457,9 @@ def list_upcoming_events(connectedAccountId: str, max_results: int = 10, calenda
                     start = event.get("start", {})
                     start_time = start.get("dateTime", start.get("date", "No time"))
                     event_list.append(f"• **{title}** - {start_time}")
-                except Exception as e:
-                    pass
+                except (KeyError, TypeError, AttributeError):
+                    # Skip events with malformed data
+                    continue
             return f"📅 **Upcoming Events:**\n" + "\n".join(event_list)
         else:
             return "No upcoming events found."

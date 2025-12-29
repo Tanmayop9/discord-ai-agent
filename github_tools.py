@@ -9,7 +9,7 @@ COMPOSIO_API_KEY = os.environ["COMPOSIO_API_KEY"]
 
 
 @tool("Create GitHub Issue")
-def create_github_issue(connectedAccountId: str, owner: str, repo: str, title: str, body: str | None = None, labels: list | None = None) -> str:
+def create_github_issue(connectedAccountId: str, owner: str, repo: str, title: str, body: str | None = None, labels: list[str] | None = None) -> str:
     """
         Create a new issue in a GitHub repository.
 
