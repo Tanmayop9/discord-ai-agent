@@ -2,7 +2,7 @@ crewai[tools]==0.32.2
 python-dotenv==1.0.1
 composio_core==0.3.14
 composio-crewai==0.3.14
-langchain-google-genai<2.0.0,>=1.0.0
+langchain-google-genai>=1.0.0,<2.0.0
 google-genai>=1.0.0
 discord==2.3.2
 tinydb==4.8.0
