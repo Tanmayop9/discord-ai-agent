@@ -222,6 +222,7 @@ This project couldn't be there if they didn't be there!
 - [discord.py](https://discordpy.readthedocs.io/en/stable/)
 - [crew AI](https://docs.crewai.com/)
 - [Gemini](https://gemini.google.com/app)
+- [Google Gen AI SDK](https://github.com/googleapis/python-genai)
 
 Even something was gone wrong while making this project but composio team helped me to over come the issues and I am really thankful to it!
 

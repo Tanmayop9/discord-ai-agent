@@ -50,6 +50,8 @@ from slack_tools import (
 dotenv.load_dotenv()
 google_api_key = os.environ["GOOGLE_API_KEY"]
 
+# ChatGoogleGenerativeAI uses the official google-genai SDK under the hood
+# Reference: https://github.com/googleapis/python-genai
 llm = ChatGoogleGenerativeAI(model="gemini-pro", temperature=0.1, google_api_key=google_api_key)
 
 date = datetime.today().strftime("%Y-%m-%d")
